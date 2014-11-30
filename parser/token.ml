@@ -1,7 +1,6 @@
 type linenum = int
-type token = string
 
-type tiger_TOKENS = 
+type token = 
   | TYPE of (Lexing.position)
   | VAR of (Lexing.position)
   | FUNCTION of (Lexing.position)
