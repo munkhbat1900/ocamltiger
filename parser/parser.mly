@@ -45,6 +45,7 @@
 %token COMMA
 %token EOF
 %token <int> INT
+%token <string> STRING
 
 %type <unit> exp
 %start exp
@@ -52,4 +53,46 @@
 %%
 exp:
     | lvalue {}
-    | 
+    | Nil {}
+    | Sequencing {}
+    | INT {}
+    | STRING {}
+    | MINUS exp
+    | Funccall {}
+    | BinOpExp {}
+    | RecordCreation {}
+    | ArrayCreation {}
+    | assignment {}
+    | IfThenElse {}
+    | IfThen {}
+    | While {}
+    | For {}
+    | Break {}
+    | Let
+    | parenthesis
+
+lvalue :
+    | ID {}
+    | lvalue DOT ID {}
+    | lvalue LBRACK exp RBRACK {}
+
+Sequencing :
+    | LPAREN expList RPAREN {}
+
+expList : 
+    | expList SEMICOLON exp {}
+    | exp SEMICOLON exp {}
+
+Funccall :
+    | ID LPAREN parameters RPAREN {}
+
+parameters : 
+    | params {}
+    |  {}
+	
+params :
+    | params COMMA exp {}
+    | exp {}
+
+BinOpExp : 
+
