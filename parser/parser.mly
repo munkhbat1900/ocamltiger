@@ -95,4 +95,17 @@ params :
     | exp {}
 
 BinOpExp : 
+    | exp PLUS exp {}
+    | exp MINUS exp {}
+    | exp TIMES exp {}
+    | exp DIVIDE exp {}
+    | exp EQ exp {}
+    | exp NEQ exp {}
+    | exp LT exp {}
+    | exp LE exp {}
+    | exp GT exp {}
+    | exp GE exp {}
+    | exp AND exp {}
+    | exp OR exp {}
+
 
