@@ -108,4 +108,5 @@ BinOpExp :
     | exp AND exp {}
     | exp OR exp {}
 
-
+RecordCreation :
+    | ID LBRACE 
