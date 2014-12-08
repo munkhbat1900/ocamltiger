@@ -1,8 +1,7 @@
 {
 (*module E = ERRORMSG*)
-open Token
-open Stack
 open Lexing
+open Parser
 
 let string_buffer = Buffer.create 10
 
@@ -16,8 +15,7 @@ let escape c =
 }
 
 (*let lineNum = E.lineNum
-let linePos = E.linePos
-let comment_pos = Stack.create() *)
+let linePos = E.linePos *)
 
 let letter = ['A'-'Z' 'a'-'z']
 let identifier = ['a'-'z' 'A'-'Z' '_'] ['a'-'z' 'A'-'Z' '0'-'9' '_']*
@@ -37,55 +35,55 @@ rule token = parse
   | identifier as id
       {
 	match id with
-	  | "type" -> Printf.printf "TYPE\n"; token lexbuf
-	  | "var" -> Printf.printf "VAR\n"; token lexbuf
-	  | "function" -> Printf.printf "FUNCTION\n"; token lexbuf
-	  | "break" -> Printf.printf "BREAK\n"; token lexbuf
-	  | "of" -> Printf.printf "OF\n"; token lexbuf
-	  | "end" -> Printf.printf "END\n"; token lexbuf
-	  | "in" -> Printf.printf "IN\n"; token lexbuf
-	  | "nil" -> Printf.printf "NIL\n"; token lexbuf
-	  | "let" -> Printf.printf "LET\n"; token lexbuf
-	  | "do" -> Printf.printf "DO\n"; token lexbuf
-	  | "to" -> Printf.printf "TO\n"; token lexbuf
-	  | "for" -> Printf.printf "FOR\n"; token lexbuf
-	  | "while" -> Printf.printf "WHILE\n"; token lexbuf
-	  | "else" -> Printf.printf "ELSE\n"; token lexbuf
-	  | "then" -> Printf.printf "THEN\n"; token lexbuf
-	  | "if" -> Printf.printf "IF\n"; token lexbuf
-	  | "array" -> Printf.printf "ARRAY\n"; token lexbuf
-	  | _ -> Printf.printf "IDENTIFIER = %s\n" (Lexing.lexeme lexbuf); token lexbuf 
+	  | "type" -> Printf.printf "TYPE\n"; TYPE
+	  | "var" -> Printf.printf "VAR\n"; VAR
+	  | "function" -> Printf.printf "FUNCTION\n"; FUNCTION
+	  | "break" -> Printf.printf "BREAK\n"; BREAK
+	  | "of" -> Printf.printf "OF\n"; OF
+	  | "end" -> Printf.printf "END\n"; END
+	  | "in" -> Printf.printf "IN\n"; IN
+	  | "nil" -> Printf.printf "NIL\n"; NIL
+	  | "let" -> Printf.printf "LET\n"; LET
+	  | "do" -> Printf.printf "DO\n"; DO
+	  | "to" -> Printf.printf "TO\n"; TO
+	  | "for" -> Printf.printf "FOR\n"; FOR
+	  | "while" -> Printf.printf "WHILE\n"; WHILE
+	  | "else" -> Printf.printf "ELSE\n"; ELSE
+	  | "then" -> Printf.printf "THEN\n"; THEN
+	  | "if" -> Printf.printf "IF\n"; IF
+	  | "array" -> Printf.printf "ARRAY\n"; ARRAY
+	  | _ -> Printf.printf "IDENTIFIER = %s\n" (Lexing.lexeme lexbuf); ID(Lexing.lexeme lexbuf)
       }
   | "/*" { comment 0 lexbuf; token lexbuf }
-  | ":=" { Printf.printf "ASSIGN\n"; token lexbuf }
-  | "|" { Printf.printf "OR\n"; token lexbuf }
-  | "&" { Printf.printf "AND\n"; token lexbuf }
-  | ">=" { Printf.printf "GE\n"; token lexbuf }
-  | ">" { Printf.printf "GT\n"; token lexbuf }
-  | "<=" { Printf.printf "LE\n"; token lexbuf }
-  | "<" { Printf.printf "LT\n"; token lexbuf }
-  | "<>" { Printf.printf "NEQ\n"; token lexbuf }
-  | "=" { Printf.printf "EQ\n"; token lexbuf }
-  | "/" { Printf.printf "DIVIDE\n"; token lexbuf }
-  | "*" { Printf.printf "TIMES\n"; token lexbuf }
-  | "-" { Printf.printf "MINUS\n"; token lexbuf }
-  | "+" { Printf.printf "PLUS\n"; token lexbuf }
-  | "." { Printf.printf "DOT\n"; token lexbuf }
-  | "}" { Printf.printf "RBRACE\n"; token lexbuf }
-  | "{" { Printf.printf "LBRACE\n"; token lexbuf }
-  | ")" { Printf.printf "RBRACK\n"; token lexbuf }
-  | "(" { Printf.printf "LBRACK\n"; token lexbuf }
-  | "[" { Printf.printf "RPAREN\n"; token lexbuf }
-  | "]" { Printf.printf "LPAREN\n"; token lexbuf }
-  | ";" { Printf.printf "SEMICOLON\n"; token lexbuf }
-  | ":" { Printf.printf "COLON\n"; token lexbuf }
-  | "," { Printf.printf "COMMA\n"; token lexbuf }
-  | "\"" { let s = string lexbuf in Printf.printf "STRING = %s\n" s; token lexbuf }
+  | ":=" { Printf.printf "ASSIGN\n"; ASSIGN }
+  | "|" { Printf.printf "OR\n"; OR }
+  | "&" { Printf.printf "AND\n"; AND }
+  | ">=" { Printf.printf "GE\n"; GE }
+  | ">" { Printf.printf "GT\n"; GT}
+  | "<=" { Printf.printf "LE\n"; LE }
+  | "<" { Printf.printf "LT\n"; LT }
+  | "<>" { Printf.printf "NEQ\n"; NEQ }
+  | "=" { Printf.printf "EQ\n"; EQ }
+  | "/" { Printf.printf "DIVIDE\n"; DIVIDE }
+  | "*" { Printf.printf "TIMES\n"; TIMES }
+  | "-" { Printf.printf "MINUS\n"; MINUS }
+  | "+" { Printf.printf "PLUS\n"; PLUS }
+  | "." { Printf.printf "DOT\n"; DOT }
+  | "}" { Printf.printf "RBRACE\n"; RBRACE }
+  | "{" { Printf.printf "LBRACE\n"; LBRACE }
+  | ")" { Printf.printf "RPAREN\n"; RPAREN }
+  | "(" { Printf.printf "LPAREN\n"; LPAREN }
+  | "[" { Printf.printf "LBRACK\n"; LBRACK }
+  | "]" { Printf.printf "RBRACK\n"; RBRACK }
+  | ";" { Printf.printf "SEMICOLON\n"; SEMICOLON }
+  | ":" { Printf.printf "COLON\n"; COLON }
+  | "," { Printf.printf "COMMA\n"; COMMA }
+  | "\"" { let s = string lexbuf in Printf.printf "STRING = %s\n" s; STRING(Lexing.lexeme lexbuf) }
   | digit+
       {
-	Printf.printf "integer literal = %s\n" (Lexing.lexeme lexbuf); token lexbuf
+	Printf.printf "integer literal = %s\n" (Lexing.lexeme lexbuf); INT(int_of_string (Lexing.lexeme lexbuf))
       }
-  | eof { Printf.printf "EOF\n"; }
+  | eof { Printf.printf "EOF\n"; EOF }
 
 and string = parse
   | "\"" 

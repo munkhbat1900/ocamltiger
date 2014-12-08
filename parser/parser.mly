@@ -1,5 +1,5 @@
 %{
-
+  let getPos = Parsing.symbol_start
 %}
 
 %token <string> ID
@@ -47,29 +47,36 @@
 %token <int> INT
 %token <string> STRING
 
+%nonassoc ASSIGN
+%left AND OR
+%nonassoc EQ NEQ GT LT GE LE
+%left PLUS MINUS
+%left TIMES DIVIDE
+%nonassoc UMINUS
+
 %type <unit> exp
 %start exp
 
 %%
 exp:
     | lvalue {}
-    | Nil {}
+    | NIL {}
     | Sequencing {}
     | INT {}
     | STRING {}
-    | MINUS exp
+    | MINUS exp {}
     | Funccall {}
     | BinOpExp {}
     | RecordCreation {}
     | ArrayCreation {}
-    | assignment {}
+    | Assignment {}
     | IfThenElse {}
     | IfThen {}
     | While {}
     | For {}
-    | Break {}
-    | Let
-    | parenthesis
+    | BREAK {}
+    | Let {}
+    | parenthesis {}
 
 lvalue :
     | ID {}
@@ -84,22 +91,19 @@ expList :
     | exp SEMICOLON exp {}
 
 Funccall :
-    | ID LPAREN parameters RPAREN {}
+    | ID LPAREN parameters RPAREN {Printf.printf "funccall\n";}
 
 parameters : 
-    | params {}
-    |  {}
-	
-params :
-    | params COMMA exp {}
+    | {}
     | exp {}
+    | exp COMMA parameters {}
 
 BinOpExp : 
     | exp PLUS exp {}
     | exp MINUS exp {}
     | exp TIMES exp {}
     | exp DIVIDE exp {}
-    | exp EQ exp {}
+    | exp EQ exp {Printf.printf "EQQQ";;}
     | exp NEQ exp {}
     | exp LT exp {}
     | exp LE exp {}
@@ -109,4 +113,78 @@ BinOpExp :
     | exp OR exp {}
 
 RecordCreation :
-    | ID LBRACE 
+    | ID LBRACE recordExpList RBRACE {Printf.printf "record creation\n";}
+
+recordExpList :
+    | recordExpField {}
+    | recordExpList COMMA recordExpField {}
+
+recordExpField : 
+    | {}
+    | ID EQ exp {}
+
+ArrayCreation : 
+    | ID LBRACK exp RBRACK OF exp {}
+	
+Assignment :
+    | lvalue ASSIGN exp {}
+	
+IfThenElse :
+    | IF exp THEN exp ELSE exp {}
+
+IfThen :
+    | IF exp THEN exp {}
+	
+While : 
+    | WHILE exp DO exp {}
+
+For :
+  | FOR ID ASSIGN exp TO exp DO exp {}
+      
+Let :
+  | LET decs IN expseq END {}
+
+decs :
+  | decs dec {}
+  |  {}
+
+dec : 
+  | tydec {}
+  | vardec {}
+  | fundec {}
+
+tydec :
+  | TYPE ID EQ ty {}
+
+ty :
+  | ID {} 
+  | LBRACE tyfields RBRACE {}
+  | ARRAY OF ID {}
+
+tyfields :
+  | {}
+  | tyfieldlist {}
+
+tyfieldlist :
+  | tyfieldlist COMMA tyfield {}
+  | tyfield {}
+
+tyfield : 
+  | ID COLON ID {}
+
+vardec : 
+  | VAR ID ASSIGN exp {}
+  | VAR ID COLON ID ASSIGN exp {}
+
+fundec :
+  | FUNCTION ID LPAREN tyfields RPAREN EQ exp {}
+  | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp {}
+
+
+expseq : 
+  | expList {}
+  | exp {}
+  | {}
+
+parenthesis : 
+  | LPAREN exp RPAREN {}
