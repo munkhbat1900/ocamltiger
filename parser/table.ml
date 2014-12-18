@@ -1,1 +1,1 @@
-type Table = 
+module IntMapTable ()

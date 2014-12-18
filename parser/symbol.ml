@@ -10,8 +10,7 @@ let symbol name =
     incr nextsym;
     Hashtbl.add hashtable name !nextsym;
     (name, !nextsym)
-let name symbol = 
-  fst symbol
 
+let name symbol = fst symbol
 
 	
