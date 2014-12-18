@@ -1,6 +1,6 @@
 type symbol = string * int
 
-let hashtable = Hashtbl.create 128
+let hashtable : (string, int) Hashtbl.t = Hashtbl.create 128
 let nextsym = ref 0
 
 let symbol name = 
@@ -13,4 +13,5 @@ let symbol name =
 
 let name symbol = fst symbol
 
-	
+let compare (_, n) (_, m) = 
+  Pervasives.compare n m
