@@ -44,5 +44,5 @@ type token =
   | INT of (int)
   | STRING of (string)
 
-val exp :
-  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> unit
+val program :
+  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Ast.exp
