@@ -190,24 +190,24 @@ let
 # 36 "lexer.mll"
       (
 	match id with
-	  | "type" -> Printf.printf "TYPE\n"; TYPE
-	  | "var" -> Printf.printf "VAR\n"; VAR
-	  | "function" -> Printf.printf "FUNCTION\n"; FUNCTION
-	  | "break" -> Printf.printf "BREAK\n"; BREAK
-	  | "of" -> Printf.printf "OF\n"; OF
-	  | "end" -> Printf.printf "END\n"; END
-	  | "in" -> Printf.printf "IN\n"; IN
-	  | "nil" -> Printf.printf "NIL\n"; NIL
-	  | "let" -> Printf.printf "LET\n"; LET
-	  | "do" -> Printf.printf "DO\n"; DO
-	  | "to" -> Printf.printf "TO\n"; TO
-	  | "for" -> Printf.printf "FOR\n"; FOR
-	  | "while" -> Printf.printf "WHILE\n"; WHILE
-	  | "else" -> Printf.printf "ELSE\n"; ELSE
-	  | "then" -> Printf.printf "THEN\n"; THEN
-	  | "if" -> Printf.printf "IF\n"; IF
-	  | "array" -> Printf.printf "ARRAY\n"; ARRAY
-	  | _ -> Printf.printf "IDENTIFIER = %s\n" (Lexing.lexeme lexbuf); ID(Lexing.lexeme lexbuf)
+	  | "type" -> TYPE
+	  | "var" -> VAR
+	  | "function" -> FUNCTION
+	  | "break" -> BREAK
+	  | "of" -> OF
+	  | "end" -> END
+	  | "in" -> IN
+	  | "nil" -> NIL
+	  | "let" -> LET
+	  | "do" -> DO
+	  | "to" -> TO
+	  | "for" -> FOR
+	  | "while" -> WHILE
+	  | "else" -> ELSE
+	  | "then" -> THEN
+	  | "if" ->  IF
+	  | "array" -> ARRAY
+	  | _ -> ID(Lexing.lexeme lexbuf)
       )
 # 213 "lexer.ml"
 
@@ -218,128 +218,128 @@ let
 
   | 4 ->
 # 58 "lexer.mll"
-         ( Printf.printf "ASSIGN\n"; ASSIGN )
+         ( ASSIGN )
 # 223 "lexer.ml"
 
   | 5 ->
 # 59 "lexer.mll"
-        ( Printf.printf "OR\n"; OR )
+        ( OR )
 # 228 "lexer.ml"
 
   | 6 ->
 # 60 "lexer.mll"
-        ( Printf.printf "AND\n"; AND )
+        ( AND )
 # 233 "lexer.ml"
 
   | 7 ->
 # 61 "lexer.mll"
-         ( Printf.printf "GE\n"; GE )
+         ( GE )
 # 238 "lexer.ml"
 
   | 8 ->
 # 62 "lexer.mll"
-        ( Printf.printf "GT\n"; GT)
+        ( GT)
 # 243 "lexer.ml"
 
   | 9 ->
 # 63 "lexer.mll"
-         ( Printf.printf "LE\n"; LE )
+         ( LE )
 # 248 "lexer.ml"
 
   | 10 ->
 # 64 "lexer.mll"
-        ( Printf.printf "LT\n"; LT )
+        ( LT )
 # 253 "lexer.ml"
 
   | 11 ->
 # 65 "lexer.mll"
-         ( Printf.printf "NEQ\n"; NEQ )
+         ( NEQ )
 # 258 "lexer.ml"
 
   | 12 ->
 # 66 "lexer.mll"
-        ( Printf.printf "EQ\n"; EQ )
+        ( EQ )
 # 263 "lexer.ml"
 
   | 13 ->
 # 67 "lexer.mll"
-        ( Printf.printf "DIVIDE\n"; DIVIDE )
+        ( DIVIDE )
 # 268 "lexer.ml"
 
   | 14 ->
 # 68 "lexer.mll"
-        ( Printf.printf "TIMES\n"; TIMES )
+        ( TIMES )
 # 273 "lexer.ml"
 
   | 15 ->
 # 69 "lexer.mll"
-        ( Printf.printf "MINUS\n"; MINUS )
+        ( MINUS )
 # 278 "lexer.ml"
 
   | 16 ->
 # 70 "lexer.mll"
-        ( Printf.printf "PLUS\n"; PLUS )
+        ( PLUS )
 # 283 "lexer.ml"
 
   | 17 ->
 # 71 "lexer.mll"
-        ( Printf.printf "DOT\n"; DOT )
+        ( DOT )
 # 288 "lexer.ml"
 
   | 18 ->
 # 72 "lexer.mll"
-        ( Printf.printf "RBRACE\n"; RBRACE )
+        ( RBRACE )
 # 293 "lexer.ml"
 
   | 19 ->
 # 73 "lexer.mll"
-        ( Printf.printf "LBRACE\n"; LBRACE )
+        ( LBRACE )
 # 298 "lexer.ml"
 
   | 20 ->
 # 74 "lexer.mll"
-        ( Printf.printf "RPAREN\n"; RPAREN )
+        ( RPAREN )
 # 303 "lexer.ml"
 
   | 21 ->
 # 75 "lexer.mll"
-        ( Printf.printf "LPAREN\n"; LPAREN )
+        ( LPAREN )
 # 308 "lexer.ml"
 
   | 22 ->
 # 76 "lexer.mll"
-        ( Printf.printf "LBRACK\n"; LBRACK )
+        ( LBRACK )
 # 313 "lexer.ml"
 
   | 23 ->
 # 77 "lexer.mll"
-        ( Printf.printf "RBRACK\n"; RBRACK )
+        ( RBRACK )
 # 318 "lexer.ml"
 
   | 24 ->
 # 78 "lexer.mll"
-        ( Printf.printf "SEMICOLON\n"; SEMICOLON )
+        ( SEMICOLON )
 # 323 "lexer.ml"
 
   | 25 ->
 # 79 "lexer.mll"
-        ( Printf.printf "COLON\n"; COLON )
+        ( COLON )
 # 328 "lexer.ml"
 
   | 26 ->
 # 80 "lexer.mll"
-        ( Printf.printf "COMMA\n"; COMMA )
+        ( COMMA )
 # 333 "lexer.ml"
 
   | 27 ->
 # 81 "lexer.mll"
-         ( let s = string lexbuf in Printf.printf "STRING = %s\n" s; STRING(Lexing.lexeme lexbuf) )
+         ( let s = string lexbuf in STRING(s) )
 # 338 "lexer.ml"
 
   | 28 ->
 # 83 "lexer.mll"
       (
-	Printf.printf "integer literal = %s\n" (Lexing.lexeme lexbuf); INT(int_of_string (Lexing.lexeme lexbuf))
+	INT(int_of_string (Lexing.lexeme lexbuf))
       )
 # 345 "lexer.ml"
 

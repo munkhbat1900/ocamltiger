@@ -90,3 +90,6 @@ and var_dec = {
   var_pos : pos;
 }
 and type_dec = { typ_name : symbol; ty : ty; type_pos : pos; }
+val indentPrintf : int -> ('a, out_channel, unit) format -> 'a
+val getOperName : oper -> string
+val printAst : exp -> unit
