@@ -152,23 +152,23 @@ For :
   | FOR id ASSIGN exp TO exp DO exp { ForExp {for_var = $2; for_escape = ref true; lo = $4; hi = $6; for_body = $8; for_pos = getPos()} }
       
 Let :
-  | LET decs IN expseq END { LetExp { decs = $2; body = $4; let_pos = getPos() } }
+  | LET decs IN expseq END { LetExp { decs = $2; let_body = $4; let_pos = getPos() } }
 
 decs :
-  | decs dec { $1 @ $2 }
+  | dec decs { $1 :: $2 }
   |  { [] }
 
 dec : 
-  | tydecs { $1 }
+  | tydecs { TypeDec($1) }
   | vardec { $1 }
-  | fundecs { $1 (*FunctionDec($1)*) }
+  | fundecs { FunctionDec($1) }
 
 tydecs :
   | tydec { [$1] }
-  | tydec tydecs {[$1] @ $2}
+  | tydec tydecs {$1 :: $2}
 
 tydec : 
-  | TYPE id EQ ty { type_dec {typ_name = $2; ty = $4; type_pos = getPos()} }
+  | TYPE id EQ ty { (*type_dec*) {typ_name = $2; ty = $4; type_pos = getPos()} }
 
 ty :
   | id { NameTy ($1, getPos()) } 
@@ -184,25 +184,26 @@ tyfieldlist :
   | tyfield {[$1]}
 
 tyfield : 
-  | id COLON id {field { field_name = $1; field_escape = ref true; typ = $3; field_pos = getPos() }}
+  | id COLON id {(*field*) { field_name = $1; field_escape = ref true; field_typ = $3; field_pos = getPos() }}
 
 vardec : 
-  | VAR id ASSIGN exp { VarDec {var_name = $2; var_escape = ref true; typ = None; init = $4; var_pos = getPos()} }
-  | VAR id COLON id ASSIGN exp { VarDec {var_name = $2; var_escape = ref true; typ = Some(($4, getpos())); init = $6; var_pos = getPos() } }
+  | VAR id ASSIGN exp { VarDec {var_name = $2; var_escape = ref true; var_typ = None; init_value = $4; var_pos = getPos()} }
+  | VAR id COLON id ASSIGN exp { VarDec {var_name = $2; var_escape = ref true; var_typ = Some(($4, getPos())); init_value = $6; var_pos = getPos() } }
 
 fundecs : 
-  | fundec { $1 :: [] }
+  | fundec { [$1] }
   | fundec fundecs { $1 :: $2 }
 
 fundec :
-  | FUNCTION id LPAREN tyfields RPAREN EQ exp { fundec {fun_name = $2; params = $4; result = NONE; body = $7; fun_pos = getPos() } }
-  | FUNCTION id LPAREN tyfields RPAREN COLON id EQ exp {fundec {fun_name = $2; params = $4; result = Some $7; body = $9; fun_pos = getPos() }}
+  | FUNCTION id LPAREN tyfields RPAREN EQ exp { (*fundec*) {fun_name = $2; params = $4; result = None; fun_body = $7; fun_pos = getPos() } }
+  | FUNCTION id LPAREN tyfields RPAREN COLON id EQ exp { (*fundec*) {fun_name = $2; params = $4; result = Some ($7, getPos ()); fun_body = $9; fun_pos = getPos() }}
 
 
 expseq : 
-  | expList { $1 }
-  | exp { [$1] }
-  | { [] }
+  | expList { SeqExp($1) }
+  | exp { SeqExp([($1, getPos())]) }
+  | { SeqExp([]) }
+
 
 /*parenthesis : 
   | LPAREN exp RPAREN {} */

@@ -49,7 +49,7 @@ and fundec = {
   fun_name : symbol;
   params : field list;
   result : (symbol * pos) option;
-  func_body : exp;
+  fun_body : exp;
   fun_pos : pos;
 }
 and call_exp = { func : symbol; args : exp list; call_pos : pos; }
@@ -75,7 +75,7 @@ and for_exp = {
   for_body : exp;
   for_pos : pos;
 }
-and let_exp = { decs : dec list; body : exp; let_pos : pos; }
+and let_exp = { decs : dec list; let_body : exp; let_pos : pos; }
 and array_exp = {
   arr_typ : symbol;
   size : exp;

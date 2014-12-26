@@ -35,53 +35,53 @@ rule token = parse
   | identifier as id
       {
 	match id with
-	  | "type" -> Printf.printf "TYPE\n"; TYPE
-	  | "var" -> Printf.printf "VAR\n"; VAR
-	  | "function" -> Printf.printf "FUNCTION\n"; FUNCTION
-	  | "break" -> Printf.printf "BREAK\n"; BREAK
-	  | "of" -> Printf.printf "OF\n"; OF
-	  | "end" -> Printf.printf "END\n"; END
-	  | "in" -> Printf.printf "IN\n"; IN
-	  | "nil" -> Printf.printf "NIL\n"; NIL
-	  | "let" -> Printf.printf "LET\n"; LET
-	  | "do" -> Printf.printf "DO\n"; DO
-	  | "to" -> Printf.printf "TO\n"; TO
-	  | "for" -> Printf.printf "FOR\n"; FOR
-	  | "while" -> Printf.printf "WHILE\n"; WHILE
-	  | "else" -> Printf.printf "ELSE\n"; ELSE
-	  | "then" -> Printf.printf "THEN\n"; THEN
-	  | "if" -> Printf.printf "IF\n"; IF
-	  | "array" -> Printf.printf "ARRAY\n"; ARRAY
-	  | _ -> Printf.printf "IDENTIFIER = %s\n" (Lexing.lexeme lexbuf); ID(Lexing.lexeme lexbuf)
+	  | "type" -> TYPE
+	  | "var" -> VAR
+	  | "function" -> FUNCTION
+	  | "break" -> BREAK
+	  | "of" -> OF
+	  | "end" -> END
+	  | "in" -> IN
+	  | "nil" -> NIL
+	  | "let" -> LET
+	  | "do" -> DO
+	  | "to" -> TO
+	  | "for" -> FOR
+	  | "while" -> WHILE
+	  | "else" -> ELSE
+	  | "then" -> THEN
+	  | "if" ->  IF
+	  | "array" -> ARRAY
+	  | _ -> ID(Lexing.lexeme lexbuf)
       }
   | "/*" { comment 0 lexbuf; token lexbuf }
-  | ":=" { Printf.printf "ASSIGN\n"; ASSIGN }
-  | "|" { Printf.printf "OR\n"; OR }
-  | "&" { Printf.printf "AND\n"; AND }
-  | ">=" { Printf.printf "GE\n"; GE }
-  | ">" { Printf.printf "GT\n"; GT}
-  | "<=" { Printf.printf "LE\n"; LE }
-  | "<" { Printf.printf "LT\n"; LT }
-  | "<>" { Printf.printf "NEQ\n"; NEQ }
-  | "=" { Printf.printf "EQ\n"; EQ }
-  | "/" { Printf.printf "DIVIDE\n"; DIVIDE }
-  | "*" { Printf.printf "TIMES\n"; TIMES }
-  | "-" { Printf.printf "MINUS\n"; MINUS }
-  | "+" { Printf.printf "PLUS\n"; PLUS }
-  | "." { Printf.printf "DOT\n"; DOT }
-  | "}" { Printf.printf "RBRACE\n"; RBRACE }
-  | "{" { Printf.printf "LBRACE\n"; LBRACE }
-  | ")" { Printf.printf "RPAREN\n"; RPAREN }
-  | "(" { Printf.printf "LPAREN\n"; LPAREN }
-  | "[" { Printf.printf "LBRACK\n"; LBRACK }
-  | "]" { Printf.printf "RBRACK\n"; RBRACK }
-  | ";" { Printf.printf "SEMICOLON\n"; SEMICOLON }
-  | ":" { Printf.printf "COLON\n"; COLON }
-  | "," { Printf.printf "COMMA\n"; COMMA }
-  | "\"" { let s = string lexbuf in Printf.printf "STRING = %s\n" s; STRING(Lexing.lexeme lexbuf) }
+  | ":=" { ASSIGN }
+  | "|" { OR }
+  | "&" { AND }
+  | ">=" { GE }
+  | ">" { GT}
+  | "<=" { LE }
+  | "<" { LT }
+  | "<>" { NEQ }
+  | "=" { EQ }
+  | "/" { DIVIDE }
+  | "*" { TIMES }
+  | "-" { MINUS }
+  | "+" { PLUS }
+  | "." { DOT }
+  | "}" { RBRACE }
+  | "{" { LBRACE }
+  | ")" { RPAREN }
+  | "(" { LPAREN }
+  | "[" { LBRACK }
+  | "]" { RBRACK }
+  | ";" { SEMICOLON }
+  | ":" { COLON }
+  | "," { COMMA }
+  | "\"" { let s = string lexbuf in STRING(s) }
   | digit+
       {
-	Printf.printf "integer literal = %s\n" (Lexing.lexeme lexbuf); INT(int_of_string (Lexing.lexeme lexbuf))
+	INT(int_of_string (Lexing.lexeme lexbuf))
       }
   | eof { Printf.printf "EOF\n"; EOF }
 
