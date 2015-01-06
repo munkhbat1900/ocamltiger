@@ -1,9 +1,8 @@
 # 1 "lexer.mll"
  
 (*module E = ERRORMSG*)
-open Token
-open Stack
 open Lexing
+open Parser
 
 let string_buffer = Buffer.create 10
 
@@ -15,7 +14,7 @@ let escape c =
   | 't' -> '\t'
   | _ -> c
 
-# 19 "lexer.ml"
+# 18 "lexer.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base = 
    "\000\000\226\255\078\000\228\255\229\255\231\255\232\255\233\255\
@@ -169,185 +168,185 @@ let rec token lexbuf =
 and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 31 "lexer.mll"
+# 29 "lexer.mll"
             (
     (*incr lineNum;
     linePos := *)
     token lexbuf
   )
-# 179 "lexer.ml"
+# 178 "lexer.ml"
 
   | 1 ->
-# 36 "lexer.mll"
+# 34 "lexer.mll"
                (token lexbuf)
-# 184 "lexer.ml"
+# 183 "lexer.ml"
 
   | 2 ->
 let
-# 37 "lexer.mll"
+# 35 "lexer.mll"
                   id
-# 190 "lexer.ml"
+# 189 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 38 "lexer.mll"
+# 36 "lexer.mll"
       (
 	match id with
-	  | "type" -> Printf.printf "TYPE\n"; token lexbuf
-	  | "var" -> Printf.printf "VAR\n"; token lexbuf
-	  | "function" -> Printf.printf "FUNCTION\n"; token lexbuf
-	  | "break" -> Printf.printf "BREAK\n"; token lexbuf
-	  | "of" -> Printf.printf "OF\n"; token lexbuf
-	  | "end" -> Printf.printf "END\n"; token lexbuf
-	  | "in" -> Printf.printf "IN\n"; token lexbuf
-	  | "nil" -> Printf.printf "NIL\n"; token lexbuf
-	  | "let" -> Printf.printf "LET\n"; token lexbuf
-	  | "do" -> Printf.printf "DO\n"; token lexbuf
-	  | "to" -> Printf.printf "TO\n"; token lexbuf
-	  | "for" -> Printf.printf "FOR\n"; token lexbuf
-	  | "while" -> Printf.printf "WHILE\n"; token lexbuf
-	  | "else" -> Printf.printf "ELSE\n"; token lexbuf
-	  | "then" -> Printf.printf "THEN\n"; token lexbuf
-	  | "if" -> Printf.printf "IF\n"; token lexbuf
-	  | "array" -> Printf.printf "ARRAY\n"; token lexbuf
-	  | _ -> Printf.printf "IDENTIFIER = %s\n" (Lexing.lexeme lexbuf); token lexbuf 
+	  | "type" -> TYPE
+	  | "var" -> VAR
+	  | "function" -> FUNCTION
+	  | "break" -> BREAK
+	  | "of" -> OF
+	  | "end" -> END
+	  | "in" -> IN
+	  | "nil" -> NIL
+	  | "let" -> LET
+	  | "do" -> DO
+	  | "to" -> TO
+	  | "for" -> FOR
+	  | "while" -> WHILE
+	  | "else" -> ELSE
+	  | "then" -> THEN
+	  | "if" ->  IF
+	  | "array" -> ARRAY
+	  | _ -> ID(Lexing.lexeme lexbuf)
       )
-# 214 "lexer.ml"
+# 213 "lexer.ml"
 
   | 3 ->
-# 59 "lexer.mll"
+# 57 "lexer.mll"
          ( comment 0 lexbuf; token lexbuf )
-# 219 "lexer.ml"
+# 218 "lexer.ml"
 
   | 4 ->
-# 60 "lexer.mll"
-         ( Printf.printf "ASSIGN\n"; token lexbuf )
-# 224 "lexer.ml"
+# 58 "lexer.mll"
+         ( ASSIGN )
+# 223 "lexer.ml"
 
   | 5 ->
-# 61 "lexer.mll"
-        ( Printf.printf "OR\n"; token lexbuf )
-# 229 "lexer.ml"
+# 59 "lexer.mll"
+        ( OR )
+# 228 "lexer.ml"
 
   | 6 ->
-# 62 "lexer.mll"
-        ( Printf.printf "AND\n"; token lexbuf )
-# 234 "lexer.ml"
+# 60 "lexer.mll"
+        ( AND )
+# 233 "lexer.ml"
 
   | 7 ->
-# 63 "lexer.mll"
-         ( Printf.printf "GE\n"; token lexbuf )
-# 239 "lexer.ml"
+# 61 "lexer.mll"
+         ( GE )
+# 238 "lexer.ml"
 
   | 8 ->
-# 64 "lexer.mll"
-        ( Printf.printf "GT\n"; token lexbuf )
-# 244 "lexer.ml"
+# 62 "lexer.mll"
+        ( GT)
+# 243 "lexer.ml"
 
   | 9 ->
-# 65 "lexer.mll"
-         ( Printf.printf "LE\n"; token lexbuf )
-# 249 "lexer.ml"
+# 63 "lexer.mll"
+         ( LE )
+# 248 "lexer.ml"
 
   | 10 ->
-# 66 "lexer.mll"
-        ( Printf.printf "LT\n"; token lexbuf )
-# 254 "lexer.ml"
+# 64 "lexer.mll"
+        ( LT )
+# 253 "lexer.ml"
 
   | 11 ->
-# 67 "lexer.mll"
-         ( Printf.printf "NEQ\n"; token lexbuf )
-# 259 "lexer.ml"
+# 65 "lexer.mll"
+         ( NEQ )
+# 258 "lexer.ml"
 
   | 12 ->
-# 68 "lexer.mll"
-        ( Printf.printf "EQ\n"; token lexbuf )
-# 264 "lexer.ml"
+# 66 "lexer.mll"
+        ( EQ )
+# 263 "lexer.ml"
 
   | 13 ->
-# 69 "lexer.mll"
-        ( Printf.printf "DIVIDE\n"; token lexbuf )
-# 269 "lexer.ml"
+# 67 "lexer.mll"
+        ( DIVIDE )
+# 268 "lexer.ml"
 
   | 14 ->
-# 70 "lexer.mll"
-        ( Printf.printf "TIMES\n"; token lexbuf )
-# 274 "lexer.ml"
+# 68 "lexer.mll"
+        ( TIMES )
+# 273 "lexer.ml"
 
   | 15 ->
-# 71 "lexer.mll"
-        ( Printf.printf "MINUS\n"; token lexbuf )
-# 279 "lexer.ml"
+# 69 "lexer.mll"
+        ( MINUS )
+# 278 "lexer.ml"
 
   | 16 ->
-# 72 "lexer.mll"
-        ( Printf.printf "PLUS\n"; token lexbuf )
-# 284 "lexer.ml"
+# 70 "lexer.mll"
+        ( PLUS )
+# 283 "lexer.ml"
 
   | 17 ->
-# 73 "lexer.mll"
-        ( Printf.printf "DOT\n"; token lexbuf )
-# 289 "lexer.ml"
+# 71 "lexer.mll"
+        ( DOT )
+# 288 "lexer.ml"
 
   | 18 ->
-# 74 "lexer.mll"
-        ( Printf.printf "RBRACE\n"; token lexbuf )
-# 294 "lexer.ml"
+# 72 "lexer.mll"
+        ( RBRACE )
+# 293 "lexer.ml"
 
   | 19 ->
-# 75 "lexer.mll"
-        ( Printf.printf "LBRACE\n"; token lexbuf )
-# 299 "lexer.ml"
+# 73 "lexer.mll"
+        ( LBRACE )
+# 298 "lexer.ml"
 
   | 20 ->
-# 76 "lexer.mll"
-        ( Printf.printf "RBRACK\n"; token lexbuf )
-# 304 "lexer.ml"
+# 74 "lexer.mll"
+        ( RPAREN )
+# 303 "lexer.ml"
 
   | 21 ->
-# 77 "lexer.mll"
-        ( Printf.printf "LBRACK\n"; token lexbuf )
-# 309 "lexer.ml"
+# 75 "lexer.mll"
+        ( LPAREN )
+# 308 "lexer.ml"
 
   | 22 ->
-# 78 "lexer.mll"
-        ( Printf.printf "RPAREN\n"; token lexbuf )
-# 314 "lexer.ml"
+# 76 "lexer.mll"
+        ( LBRACK )
+# 313 "lexer.ml"
 
   | 23 ->
-# 79 "lexer.mll"
-        ( Printf.printf "LPAREN\n"; token lexbuf )
-# 319 "lexer.ml"
+# 77 "lexer.mll"
+        ( RBRACK )
+# 318 "lexer.ml"
 
   | 24 ->
-# 80 "lexer.mll"
-        ( Printf.printf "SEMICOLON\n"; token lexbuf )
-# 324 "lexer.ml"
+# 78 "lexer.mll"
+        ( SEMICOLON )
+# 323 "lexer.ml"
 
   | 25 ->
-# 81 "lexer.mll"
-        ( Printf.printf "COLON\n"; token lexbuf )
-# 329 "lexer.ml"
+# 79 "lexer.mll"
+        ( COLON )
+# 328 "lexer.ml"
 
   | 26 ->
-# 82 "lexer.mll"
-        ( Printf.printf "COMMA\n"; token lexbuf )
-# 334 "lexer.ml"
+# 80 "lexer.mll"
+        ( COMMA )
+# 333 "lexer.ml"
 
   | 27 ->
-# 83 "lexer.mll"
-         ( let s = string lexbuf in Printf.printf "STRING = %s\n" s; token lexbuf )
-# 339 "lexer.ml"
+# 81 "lexer.mll"
+         ( let s = string lexbuf in STRING(s) )
+# 338 "lexer.ml"
 
   | 28 ->
-# 85 "lexer.mll"
+# 83 "lexer.mll"
       (
-	Printf.printf "integer literal = %s\n" (Lexing.lexeme lexbuf); token lexbuf
+	INT(int_of_string (Lexing.lexeme lexbuf))
       )
-# 346 "lexer.ml"
+# 345 "lexer.ml"
 
   | 29 ->
-# 88 "lexer.mll"
-        ( Printf.printf "EOF\n"; )
-# 351 "lexer.ml"
+# 86 "lexer.mll"
+        ( Printf.printf "EOF\n"; EOF )
+# 350 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; __ocaml_lex_token_rec lexbuf __ocaml_lex_state
 
@@ -356,32 +355,32 @@ and string lexbuf =
 and __ocaml_lex_string_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 92 "lexer.mll"
+# 90 "lexer.mll"
       (
 	let s = Buffer.contents string_buffer in
 	Buffer.clear string_buffer;
 	s
       )
-# 366 "lexer.ml"
+# 365 "lexer.ml"
 
   | 1 ->
-# 98 "lexer.mll"
+# 96 "lexer.mll"
       ( 
 	Buffer.add_char string_buffer (escape (Lexing.lexeme_char lexbuf 1));
         string lexbuf 
       )
-# 374 "lexer.ml"
+# 373 "lexer.ml"
 
   | 2 ->
-# 103 "lexer.mll"
+# 101 "lexer.mll"
       ( 
 	Buffer.add_string string_buffer (Lexing.lexeme lexbuf);
         string lexbuf 
       )
-# 382 "lexer.ml"
+# 381 "lexer.ml"
 
   | 3 ->
-# 107 "lexer.mll"
+# 105 "lexer.mll"
         (
     failwith
         (Printf.sprintf
@@ -389,7 +388,7 @@ and __ocaml_lex_string_rec lexbuf __ocaml_lex_state =
            (Lexing.lexeme_start lexbuf)
            (Lexing.lexeme_end lexbuf))
   )
-# 393 "lexer.ml"
+# 392 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; __ocaml_lex_string_rec lexbuf __ocaml_lex_state
 
@@ -398,37 +397,37 @@ and comment level lexbuf =
 and __ocaml_lex_comment_rec level lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 117 "lexer.mll"
+# 115 "lexer.mll"
       (
 	comment (level + 1) lexbuf
       )
-# 406 "lexer.ml"
+# 405 "lexer.ml"
 
   | 1 ->
-# 121 "lexer.mll"
+# 119 "lexer.mll"
       (
 	if level = 0 then () else comment (level - 1) lexbuf
       )
-# 413 "lexer.ml"
+# 412 "lexer.ml"
 
   | 2 ->
-# 124 "lexer.mll"
+# 122 "lexer.mll"
             ( comment level lexbuf )
-# 418 "lexer.ml"
+# 417 "lexer.ml"
 
   | 3 ->
-# 125 "lexer.mll"
+# 123 "lexer.mll"
         ( failwith
         (Printf.sprintf
            "unterminated comment near characters %d-%d"
            (Lexing.lexeme_start lexbuf)
            (Lexing.lexeme_end lexbuf)) )
-# 427 "lexer.ml"
+# 426 "lexer.ml"
 
   | 4 ->
-# 130 "lexer.mll"
+# 128 "lexer.mll"
       ( comment level lexbuf )
-# 432 "lexer.ml"
+# 431 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; __ocaml_lex_comment_rec level lexbuf __ocaml_lex_state
 
