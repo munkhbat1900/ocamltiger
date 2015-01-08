@@ -22,7 +22,7 @@ and exp = VarExp of var
 
 and dec = FunctionDec of (symbol * field list * (symbol * pos) option * exp * pos) list
 	  | VarDec of symbol * bool ref * (symbol * pos) option * exp * pos
-	  | TypeDec of (symbol *ty * pos) list
+	  | TypeDec of (symbol * ty * pos) list
 
 and ty = NameTy of symbol * pos
 	 | RecordTy of field list

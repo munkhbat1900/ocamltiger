@@ -1,7 +1,7 @@
 %{
-  open Ast
+  open Syntax
   module S = Symbol
-  let getPos : unit -> Ast.pos = Parsing.symbol_start
+  let getPos : unit -> Syntax.pos = Parsing.symbol_start
 %}
 
 %token <string> ID
@@ -56,10 +56,10 @@
 %left TIMES DIVIDE
 %nonassoc UMINUS
 
-%type <Ast.exp> program
-%type <Ast.exp> exp
-%type <Ast.var> lvalue
-%type <Ast.dec list> decs
+%type <Syntax.exp> program
+%type <Syntax.exp> exp
+%type <Syntax.var> lvalue
+%type <Syntax.dec list> decs
 %start program
 
 %%
@@ -101,7 +101,7 @@ expList :
   | exp SEMICOLON exp { ($1, getPos()) :: [($3, getPos())] }
 
 Funccall :
-  | id LPAREN parameters RPAREN { CallExp{func = $1; args = $3; call_pos = getPos() }}
+  | id LPAREN parameters RPAREN { CallExp($1, $3, getPos()) }
 
 parameters : 
   | { [] }
@@ -109,21 +109,21 @@ parameters :
   | exp COMMA parameters { $1::$3 }
 
 BinOpExp : 
-  | exp PLUS exp { OpExp {left = $1; oper = PlusOp; right = $3; op_pos = getPos() } }
-  | exp MINUS exp { OpExp {left = $1; oper = MinusOp; right = $3; op_pos = getPos() } }
-  | exp TIMES exp { OpExp {left = $1; oper = TimesOp; right = $3; op_pos = getPos() } }
-  | exp DIVIDE exp {OpExp {left = $1; oper = DivideOp; right = $3; op_pos = getPos() }}
-  | exp EQ exp { OpExp {left = $1; oper = EqOp; right = $3; op_pos = getPos() } }
-  | exp NEQ exp { OpExp {left = $1; oper = NeqOp; right = $3; op_pos = getPos() } }
-  | exp LT exp { OpExp {left = $1; oper = LtOp; right = $3; op_pos = getPos() } }
-  | exp LE exp { OpExp {left = $1; oper = LeOp; right = $3; op_pos = getPos() } }
-  | exp GT exp { OpExp {left = $1; oper = GtOp; right = $3; op_pos = getPos() } }
-  | exp GE exp { OpExp {left = $1; oper = GeOp; right = $3; op_pos = getPos() } }
-  | exp AND exp { IfExp {if_test = $1; then' = $3; else' = Some(IntExp(0)); if_pos = getPos() } }
-  | exp OR exp { IfExp {if_test = $1; then' = IntExp(1); else' = Some($3); if_pos = getPos() } }
+  | exp PLUS exp { OpExp($1, PlusOp, $3, getPos()) }
+  | exp MINUS exp { OpExp($1, MinusOp, $3, getPos()) }
+  | exp TIMES exp { OpExp($1, TimesOp, $3, getPos()) }
+  | exp DIVIDE exp { OpExp($1, DivideOp, $3, getPos()) }
+  | exp EQ exp { OpExp($1, EqOp, $3, getPos()) }
+  | exp NEQ exp { OpExp($1, NeqOp, $3, getPos()) }
+  | exp LT exp { OpExp($1, LtOp, $3, getPos()) }
+  | exp LE exp { OpExp($1, LeOp, $3, getPos()) }
+  | exp GT exp { OpExp($1, GtOp, $3, getPos()) }
+  | exp GE exp { OpExp($1, GeOp, $3, getPos()) }
+  | exp AND exp { IfExp ($1, $3, Some(IntExp(0)), getPos()) }
+  | exp OR exp { IfExp ($1, IntExp(1), Some($3), getPos()) }
 
 RecordCreation :
-  | id LBRACE recordExpList RBRACE { RecordExp {fields = $3; typ = $1; record_pos = getPos() } }
+  | id LBRACE recordExpList RBRACE { RecordExp ($3, $1, getPos()) }
 
 recordExpList :
   | recordExpField { $1 }
@@ -134,25 +134,25 @@ recordExpField :
   | id EQ exp { [($1, $3, getPos())] }
 
 ArrayCreation : 
-  | id LBRACK exp RBRACK OF exp { ArrayExp {arr_typ = $1; size = $3; init = $6; array_pos = getPos()} }
+  | id LBRACK exp RBRACK OF exp { ArrayExp ($1, $3, $6, getPos()) }
 	
 Assignment :
-  | lvalue ASSIGN exp { AssignExp {assign_var = $1; exp = $3; assign_pos = getPos()} }
+  | lvalue ASSIGN exp { AssignExp ($1, $3, getPos()) }
 	
 IfThenElse :
-  | IF exp THEN exp ELSE exp { IfExp {if_test = $2; then' = $4; else' = Some $6; if_pos = getPos()}}
+  | IF exp THEN exp ELSE exp { IfExp ($2, $4, Some $6, getPos()) }
 
 IfThen :
-  | IF exp THEN exp {IfExp {if_test = $2; then' = $4; else' = None; if_pos = getPos()}}
+  | IF exp THEN exp {IfExp ($2, $4, None, getPos()) }
 	
 While : 
-  | WHILE exp DO exp { WhileExp {while_test = $2; while_body = $4; while_pos = getPos()} }
+  | WHILE exp DO exp { WhileExp ($2, $4, getPos()) }
 
 For :
-  | FOR id ASSIGN exp TO exp DO exp { ForExp {for_var = $2; for_escape = ref true; lo = $4; hi = $6; for_body = $8; for_pos = getPos()} }
+  | FOR id ASSIGN exp TO exp DO exp { ForExp ($2, ref true, $4, $6, $8, getPos()) }
       
 Let :
-  | LET decs IN expseq END { LetExp { decs = $2; let_body = $4; let_pos = getPos() } }
+  | LET decs IN expseq END { LetExp ( $2, $4, getPos()) }
 
 decs :
   | dec decs { $1 :: $2 }
@@ -168,7 +168,7 @@ tydecs :
   | tydec tydecs {$1 :: $2}
 
 tydec : 
-  | TYPE id EQ ty { (*type_dec*) {typ_name = $2; ty = $4; type_pos = getPos()} }
+  | TYPE id EQ ty { ($2, $4, getPos()) }
 
 ty :
   | id { NameTy ($1, getPos()) } 
@@ -184,19 +184,19 @@ tyfieldlist :
   | tyfield {[$1]}
 
 tyfield : 
-  | id COLON id {(*field*) { field_name = $1; field_escape = ref true; field_typ = $3; field_pos = getPos() }}
+  | id COLON id { field ($1, ref true, $3,  getPos()) }
 
 vardec : 
-  | VAR id ASSIGN exp { VarDec {var_name = $2; var_escape = ref true; var_typ = None; init_value = $4; var_pos = getPos()} }
-  | VAR id COLON id ASSIGN exp { VarDec {var_name = $2; var_escape = ref true; var_typ = Some(($4, getPos())); init_value = $6; var_pos = getPos() } }
+  | VAR id ASSIGN exp { VarDec ($2, ref true, None, $4, getPos()) }
+  | VAR id COLON id ASSIGN exp { VarDec ($2, ref true, Some(($4, getPos())), $6, getPos()) }
 
 fundecs : 
   | fundec { [$1] }
   | fundec fundecs { $1 :: $2 }
 
 fundec :
-  | FUNCTION id LPAREN tyfields RPAREN EQ exp { (*fundec*) {fun_name = $2; params = $4; result = None; fun_body = $7; fun_pos = getPos() } }
-  | FUNCTION id LPAREN tyfields RPAREN COLON id EQ exp { (*fundec*) {fun_name = $2; params = $4; result = Some ($7, getPos ()); fun_body = $9; fun_pos = getPos() }}
+  | FUNCTION id LPAREN tyfields RPAREN EQ exp { (*fundec*) ($2, $4, None, $7, getPos()) }
+  | FUNCTION id LPAREN tyfields RPAREN COLON id EQ exp { (*fundec*) ($2, $4, Some ($7, getPos()), $9, getPos()) }
 
 
 expseq : 

@@ -45,4 +45,4 @@ type token =
   | STRING of (string)
 
 val program :
-  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Ast.exp
+  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Syntax.exp
