@@ -1,7 +1,7 @@
 {
 (*module E = ERRORMSG*)
 open Lexing
-open Parser
+open Parser1
 
 let string_buffer = Buffer.create 10
 

@@ -27,7 +27,7 @@ and dec =
   | TypeDec of (symbol * ty * pos) list
 and ty =
     NameTy of symbol * pos
-  | RecordTy of field list
+  | RecordTy of (symbol * bool ref * symbol * pos) list
   | ArrayTy of symbol * pos
 and field = symbol * bool ref * symbol * pos
 and oper =

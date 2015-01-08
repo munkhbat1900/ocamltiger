@@ -181,10 +181,10 @@ tyfields :
 
 tyfieldlist :
   | tyfieldlist COMMA tyfield { $1 @ [$3] }
-  | tyfield {[$1]}
+  | tyfield { [$1] }
 
 tyfield : 
-  | id COLON id { field ($1, ref true, $3,  getPos()) }
+  | id COLON id { ($1, ref true, $3,  getPos()) }
 
 vardec : 
   | VAR id ASSIGN exp { VarDec ($2, ref true, None, $4, getPos()) }
